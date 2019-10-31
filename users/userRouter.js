@@ -36,9 +36,9 @@ router.post('/:id/posts', validateUserId,validatePost,(req, res) => {
 router.get('/', (req, res) => {
 
     console.log('doubled', req.doubled);
-    User.find(req.query)
-        .then(user => {
-            res.status(200).json(user)
+    User.get()
+        .then(users => {
+            res.status(200).json(users)
         })
         .catch(error => {
             // log error to server
@@ -106,7 +106,7 @@ router.get('/:id/post', (req, res) => {
     User.update(req.params.id, req.body)
       .then(user => {
         if (user) {
-          res.status(200).json(hub);
+          res.status(200).json(user);
         } else {
           res.status(404).json({ message: 'The user could not be found' });
         }
@@ -140,7 +140,7 @@ function validateUser(req, res, next) {
   if (!name) {
     return res.status(400).json({ error: "Name required" });
   }
-  if (!typeof name !== "string") {
+  if (typeof name !== "string") {
     return res.status(400).json({ error: "Name must be a string" });
   }
   next();
